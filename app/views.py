@@ -33,3 +33,23 @@ def insert_webpage(request):
         w.save()
         return HttpResponse('Webpage is inserted ')
     return render(request,'insert_webpage.html',d)
+
+def select_webpage(request):
+    topics=Topic.objects.all()
+    d={'topics':topics}
+    if request.method=='POST':
+        select_topic=request.POST.getlist('selected_topic')
+        #print(select_topic)
+        webpages=Webpage.objects.none()
+        for i in select_topic:
+            webpages=webpages|Webpage.objects.filter(topic_name=i)
+
+        d1={'webpages':webpages}
+        return render(request,'display_webpage.html',d1)
+    
+    return render(request,'select_webpage.html',d)
+
+def checkbox(request):
+    topics=Topic.objects.all()
+    d={'topics':topics}
+    return render(request,'checkbox.html',d)
